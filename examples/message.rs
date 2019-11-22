@@ -5,8 +5,9 @@
 #![no_main]
 #![no_std]
 
-use cortex_m_semihosting::{debug, hprintln};
+use cortex_m_semihosting::hprintln;
 use panic_semihosting as _;
+use stm32f3::stm32f303;
 
 #[rtfm::app(device = stm32f303)]
 const APP: () = {
@@ -37,10 +38,11 @@ const APP: () = {
         hprintln!("baz({}, {})", x, y).unwrap();
 
         if x + y > 4 {
-            debug::exit(debug::EXIT_SUCCESS);
+            // debug::exit(debug::EXIT_SUCCESS);
+            hprintln!("EXIT_SUCCESS").unwrap();
+        } else {
+            c.spawn.foo().unwrap();
         }
-
-        c.spawn.foo().unwrap();
     }
 
     extern "C" {

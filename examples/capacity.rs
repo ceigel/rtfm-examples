@@ -5,7 +5,7 @@
 #![no_main]
 #![no_std]
 
-use cortex_m_semihosting::{debug, hprintln};
+use cortex_m_semihosting::hprintln;
 use panic_semihosting as _;
 use stm32f3::stm32f303::{self, Interrupt};
 
@@ -13,10 +13,10 @@ use stm32f3::stm32f303::{self, Interrupt};
 const APP: () = {
     #[init]
     fn init(_: init::Context) {
-        rtfm::pend(Interrupt::UART0);
+        rtfm::pend(Interrupt::SPI1);
     }
 
-    #[task(binds = UART0, spawn = [foo, bar])]
+    #[task(binds = SPI1, spawn = [foo, bar])]
     fn uart0(c: uart0::Context) {
         c.spawn.foo(0).unwrap();
         c.spawn.foo(1).unwrap();
@@ -35,7 +35,8 @@ const APP: () = {
     fn bar(_: bar::Context) {
         hprintln!("bar").unwrap();
 
-        debug::exit(debug::EXIT_SUCCESS);
+        // debug::exit(debug::EXIT_SUCCESS);
+        hprintln!("EXIT_SUCCESS").unwrap();
     }
 
     // Interrupt handlers used to dispatch software tasks
