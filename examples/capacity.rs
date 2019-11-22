@@ -6,10 +6,10 @@
 #![no_std]
 
 use cortex_m_semihosting::{debug, hprintln};
-use lm3s6965::Interrupt;
 use panic_semihosting as _;
+use stm32f3::stm32f303::{self, Interrupt};
 
-#[rtfm::app(device = lm3s6965)]
+#[rtfm::app(device = stm32f303)]
 const APP: () = {
     #[init]
     fn init(_: init::Context) {
@@ -40,6 +40,6 @@ const APP: () = {
 
     // Interrupt handlers used to dispatch software tasks
     extern "C" {
-        fn UART1();
+        fn EXTI0();
     }
 };

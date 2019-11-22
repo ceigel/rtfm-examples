@@ -5,10 +5,11 @@
 #![no_main]
 #![no_std]
 
-use cortex_m_semihosting::{debug, hprintln};
+use cortex_m_semihosting::hprintln;
 use panic_semihosting as _;
+use stm32f3::stm32f303;
 
-#[rtfm::app(device = lm3s6965)]
+#[rtfm::app(device = stm32f303)]
 const APP: () = {
     #[init(spawn = [foo])]
     fn init(c: init::Context) {
@@ -37,7 +38,8 @@ const APP: () = {
     fn bar(_: bar::Context) {
         hprintln!("bar").unwrap();
 
-        debug::exit(debug::EXIT_SUCCESS);
+        // debug::exit(debug::EXIT_SUCCESS);
+        hprintln!("EXIT_SUCCESS").unwrap();
     }
 
     #[task(priority = 2)]
@@ -47,7 +49,7 @@ const APP: () = {
 
     // Interrupt handlers used to dispatch software tasks
     extern "C" {
-        fn UART0();
-        fn UART1();
+        fn SPI2();
+        fn SPI1();
     }
 };

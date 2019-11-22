@@ -8,7 +8,7 @@
 use cortex_m_semihosting::{debug, hprintln};
 use panic_semihosting as _;
 
-#[rtfm::app(device = lm3s6965)]
+#[rtfm::app(device = stm32f303)]
 const APP: () = {
     #[init(spawn = [foo])]
     fn init(c: init::Context) {
@@ -44,6 +44,6 @@ const APP: () = {
     }
 
     extern "C" {
-        fn UART0();
+        fn EXTI0();
     }
 };
